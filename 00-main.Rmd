@@ -14,6 +14,8 @@ output:
     slide_level: 2
 bibliography:
   - bibliography.bib
+urlcolor: blue
+linkcolor: red
 ---
 
 ```{r setup, include=FALSE}
@@ -35,6 +37,9 @@ knitr::opts_chunk$set(eval=FALSE, echo = FALSE)
   * Recap of segregation measures
 
 # Motivation
+* Why residential segregation
+* Why reproducible pipeline, not a macro/function?
+* Why reproducible pipeline?
 * Since the publication of xxx manuscript, the inquiries about social segregation indices for REGARDS are growing.
 * These request contains calculating different geographic units, different years
 * Why a reproducible pipeline, instead of a packaged function/
@@ -46,12 +51,12 @@ knitr::opts_chunk$set(eval=FALSE, echo = FALSE)
 # Pipeline Demonstration
 ## Preparation
 * Software & Package Installation
-  * Git & GitHub [https://git-scm.com/book/en/v2/Getting-Started-Installing-Git]()
+  * Git & GitHub [https://git-scm.com/book/en/v2/Getting-Started-Installing-Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
   * R (recommend 4.0+, minimial 3.6+) & RStudio [https://www.rstudio.com/products/rstudio/download/]()
   * R package `renv`: [https://rstudio.github.io/renv/index.html]()
 
 ## Fetch Remote GitHub Repository
-* Download the Remote Repository [https://github.com/boyiguo1/Tutorial-Residential_Segregation_Score]()
+* Download the Remote Repository https://github.com/boyiguo1/Tutorial-Residential_Segregation_Score
   * No GitHub account required, but highly recommended to have one
   * Use HTTPS link with RStudio Create New Project
   * Download ZIP, and open the R project.
@@ -65,15 +70,28 @@ renv::restore()
 * Replace your census API key in `_targets.R`
   * Acquire your census api key string via https://api.census.gov/data/key_signup.html
 
+## Run the pipeline
+* `tar_make()` or `tar_make(object)` for a specific target object (see later)
+* To run the pipeline in the background:
+* To fetch a target object: `tar_load(object)`
+* To visualize a target pipeline:
 
+There are many other fantastic funcitons from target, I am not introducing today.
 
 ## Switching between examples
+* RStudio graphic user interface: View -> Show Git -> Dropdown list.
+[TODO: insert a  screen shot here]
+* Command line: `git checkout ChangeToBranchName`
 
 
 ## Customization
 * Understand the file system
-  * `_targets.R`: the saster file containing all steps of analysis
-  * 
+  * `_targets.R`: the master file containing all steps of analysis
+    * Similar to a normal R script file except that the assignment of objects follows a new syntax
+    * `tar_target(name, command)` translate to `name <- command`
+    * Use global search () to find all places needs customization
+  * Self-defined functions are located in the folder `R`
+    * You can use these functions to write your own pipeline to calculate remaining indcies introduced in @massey1988dimensions
 
 
 # Preliminary Findings & Remarks
