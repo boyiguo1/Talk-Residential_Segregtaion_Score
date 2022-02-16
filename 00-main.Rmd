@@ -19,7 +19,7 @@ linkcolor: red
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(eval=FALSE, echo = FALSE)
+knitr::opts_chunk$set(eval=FALSE, echo = TRUE)
 ```
 
 # Outline {.unlisted .unnumbered}
@@ -27,61 +27,63 @@ knitr::opts_chunk$set(eval=FALSE, echo = FALSE)
 * Motivation
 
 * Pipeline Demonstration
-  * Brief introduction to GitHub, Rstudio, 
-  * Brief introduction to reproducile pipeline `targets`, `renv`
-  * How to run the pipeline
-  * How to fetch data
 
-* Some Preliminary Findings
-  * Deciding 
-  * Recap of segregation measures
+* Discussion
+
 
 # Motivation
-* Why residential segregation
-* Why reproducible pipeline, not a macro/function?
-* Why reproducible pipeline?
-* Since the publication of xxx manuscript, the inquiries about social segregation indices for REGARDS are growing.
-* These request contains calculating different geographic units, different years
-* Why a reproducible pipeline, instead of a packaged function/
-    * I think it is a great time to have more systematic knowledge about reproducible research
-    * Why reproducible research. we defer to Peng. Hicks
-    * How to start with reproducible research
+## Why reproducible pipeline?
+
+- Growing number of data requests since the publication of Cummings et al. (2021)
+
+- Up the research reproducibility game
+
+  - Growing emphasis in biomedical science research [@Heil2021], and public health research [@Peng2020]
+  - See my previous talk [_Reproducible Data Analysis Workflow_](https://boyiguo1.github.io/talks/2020-07-16-Reproducible-Analysis-Workflow.pdf) for easy starts 
 
 
 # Pipeline Demonstration
 ## Preparation
 * Software & Package Installation
-  * Git & GitHub [https://git-scm.com/book/en/v2/Getting-Started-Installing-Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
-  * R (recommend 4.0+, minimial 3.6+) & RStudio [https://www.rstudio.com/products/rstudio/download/]()
-  * R package `renv`: [https://rstudio.github.io/renv/index.html]()
+  * Git: [https://git-scm.com/book/en/v2/Getting-Started-Installing-Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+  * R (recommend 4.0+, minimial 3.6+) & RStudio: [https://www.rstudio.com/products/rstudio/download/](https://www.rstudio.com/products/rstudio/download/)
+  * R package `renv`: [https://rstudio.github.io/renv/index.html](https://rstudio.github.io/renv/index.html)
 
-## Fetch Remote GitHub Repository
-* Download the Remote Repository https://github.com/boyiguo1/Tutorial-Residential_Segregation_Score
-  * No GitHub account required, but highly recommended to have one
-  * Use HTTPS link with RStudio Create New Project
-  * Download ZIP, and open the R project.
-* Open the R project
+## Download Remote GitHub Repository
+* Download the remote repository via https://github.com/boyiguo1/Tutorial-Residential_Segregation_Score
+  * No GitHub account required
+  * Download ZIP, de-compress and open the R project, i.e. `*.Rproj` file
+  * [Advanced approach:] Create new project with version control
 * Install the R packages with `renv`
-```{r}
-renv::restore()
-```
+    ```{r}
+    renv::restore()
+    ```
 
 ## Set up your census API key
+* Acquire your census api key string via https://api.census.gov/data/key_signup.html
 * Replace your census API key in `_targets.R`
-  * Acquire your census api key string via https://api.census.gov/data/key_signup.html
+  * Search the file with the keyword "TODO:"
+
+
 
 ## Run the pipeline
-* `tar_make()` or `tar_make(object)` for a specific target object (see later)
-* To run the pipeline in the background:
-* To fetch a target object: `tar_load(object)`
-* To visualize a target pipeline:
+* To run the pipeline `tar_make()`
+* To fetch a target object: `tar_load(object)`, e.g. `tar_load(rs_indices)` for the calcualted indices
+* Other Utility
+  - Pipeline progress or modification since last run
+    ```r
+    tar_visnetwork()
+    ```
+  - Check _Addins_ in the tool bar
 
-There are many other fantastic funcitons from target, I am not introducing today.
+There are many other fantastic functions from the R package `targets`. Please see https://books.ropensci.org/targets/walkthrough.htmls.
 
 ## Switching between examples
+If you [clone](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)/[fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) the remote repository
 * RStudio graphic user interface: View -> Show Git -> Dropdown list.
-[TODO: insert a  screen shot here]
 * Command line: `git checkout ChangeToBranchName`
+
+If you download the ZIP file, you need to switch to other branch on GitHub and download again.
 
 
 ## Customization
@@ -89,24 +91,31 @@ There are many other fantastic funcitons from target, I am not introducing today
   * `_targets.R`: the master file containing all steps of analysis
     * Similar to a normal R script file except that the assignment of objects follows a new syntax
     * `tar_target(name, command)` translate to `name <- command`
-    * Use global search () to find all places needs customization
+    * Use global search (`cmd/control + shift + f`) to find all places needs customization
   * Self-defined functions are located in the folder `R`
-    * You can use these functions to write your own pipeline to calculate remaining indcies introduced in @massey1988dimensions
+    * You can use these functions to write your own pipeline to calculate remaining indcies
+  
 
 
 # Preliminary Findings & Remarks
-## Residentital Segregation Indecies Recap
- According to @massey1988dimensions, there are five major dimensions of segregation
- 
- - _Evenness_: spatial distribution of different groups among _units_ in a metropolitan area
- - _Exposure_: possibility of interaction between minority and majority group members
- - Concentration: relative amount of physical space occupied by a minority group in the metropolitan area
- - Centralization: how a group spatially located near the center of an urban area
- - Clustering: which areal _units_ inhabited by minority members adjoin one another, or cluster, in space
- 
-Total of 19 indexes. By default, the majority refers to non-Hispanic Whites.
 
-## Focus
+## Recap of Massey and Denton (1988)
+* Surveyed 20 indices describing 5 dimensions of residential segregation
+* Validated the segregation indices with _US metropolitan areas data_ via factor analysis
+* Suggested one index for each of the five dimensions
+
+
+ > _"This interpretation [that researchers had on the five-dimenional indices as segregation] is an abstraction of empirical reality, not reality itself."_
+
+## Dimensions of Residentital Segregation
+
+- _Evenness_: spatial distribution of different groups among _units_ in a metropolitan area
+- _Exposure_: possibility of interaction between minority and majority group members
+- Concentration: relative amount of physical space occupied by a minority group in the metropolitan area
+- Centralization: how a group spatially located near the center of an urban area
+- Clustering: which areal _units_ inhabited by minority members adjoin one another, or cluster, in space
+
+## Indices Implemented in the Pipeline
 - Dissimilarity index for Evenness: the percentage of population would have change residence to have the same percentage overall
   - 0.0 (complete integration) to 1.0 (complete segregation)
 - Interaction index for Exposure: probability that a minority person shares a unit area with a majority person
@@ -114,11 +123,32 @@ Total of 19 indexes. By default, the majority refers to non-Hispanic Whites.
 - Isolation index for Exposure: probability that a minority person shares a unit area with a minority person
   - 0.0 (complete integration) to 1.0 (Complete segregation)
   
-## Remarks
-  - Define the geographic units: in our calculation, we aggregated tract level statistics to reflect county level information
-  - When there are only two groups, interaction index and isolation index sum up to 1
-  - "Indexes of evenness and exposure are correlated but measure different things: exposure measures depend on the relative sizes of the two groups being compared, while evenness measures do not."
-  - Isolation index only require one group, a minority group
+## Remarks (I)
+- How to choose the areal unit?
+
+> _"We chose census tracts for the simple reason that more racial and ethnic data are available for them than for other geographic units."_
+    
+- The indices are not well-defined when the area contain neither majority or minority.
+$$
+\sum\limits_{i=1}^n \big[(\frac{x_i}{X})(\frac{y_i}{t_i})\big]
+$$
+
+  - This is more likely to happen within smaller area unit, e.g. at census tract level in Arizona
+  
+## Remarks (II)
+- Measurement Consistency
+
+::: columns
+
+:::: column
+![](figure/2010_AL_Disml_tract.png)
+::::
+
+:::: column
+![](figure/2010_AL_Disml_block.png)
+::::
+:::
+__Figure 1__: 2010 Alabama Dissimilarity Index at county level calculated with census tract level statistics _(a)_  and block level statistics _(b)_ 
 
 
 
