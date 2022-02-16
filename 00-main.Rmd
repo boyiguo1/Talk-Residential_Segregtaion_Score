@@ -104,8 +104,9 @@ If you download the ZIP file, you need to switch to other branch on GitHub and d
 * Validated the segregation indices with _US metropolitan areas data_ via factor analysis
 * Suggested one index for each of the five dimensions
 
-
  > _"This interpretation [that researchers had on the five-dimenional indices as segregation] is an abstraction of empirical reality, not reality itself."_
+
+* A updated manuscript published in 1996, see [@massey1996dimensions]
 
 ## Dimensions of Residentital Segregation
 
